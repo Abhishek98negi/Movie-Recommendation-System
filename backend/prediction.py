@@ -73,11 +73,12 @@ def predict(movie_name:str):
         idx = matching_movies.index[0]
 
     
-        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=10)
+        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=5)
         recommendations_titles = movies['title'].iloc[indices].tolist()
         recommendations_avg_ratings = movies['avg_rating'].iloc[indices].tolist()
         recommendations_year = movies['year'].iloc[indices].tolist()
-        
+
+        movie_name =  movies['title'].iloc[idx]       
         movie_genre = movies['genres'].iloc[idx]
         movie_year = movies['year'].iloc[idx]
         movie_avg_rating = movies['avg_rating'].iloc[idx]
@@ -96,4 +97,4 @@ def predict(movie_name:str):
 
         }
 
-predict("Jumanzji")
+# predict("Jumanzji")

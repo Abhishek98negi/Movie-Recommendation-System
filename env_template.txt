@@ -1,0 +1,14 @@
+PROJECT_ROOT=Absolute path of the project 
+
+LOG_DIR=logs
+MODEL_DIR=model_dir
+MODEL_NAME=Recommendation_model.joblib
+
+DATASET_DIR=datasets
+MOVIES_DATASET_NAME=movies.csv
+RATINGS_DATASET_NAME=ratings.csv
+
+LOG_NAME=app.log
+MODEL_NAME=Recommendation_model.joblib
+
+API_URL=http://127.0.0.1:8000/predict-movies
