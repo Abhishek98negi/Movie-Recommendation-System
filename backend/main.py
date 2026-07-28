@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 from backend.prediction import predict
 
-
 app = FastAPI(
     title= "Movie Recommendation system",
     version="1.0.0"
