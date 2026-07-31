@@ -73,7 +73,7 @@ def predict(movie_name:str):
         idx = matching_movies.index[0]
 
     
-        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=5)
+        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=6)
         recommendations_titles = movies['title'].iloc[indices].tolist()
         recommendations_avg_ratings = movies['avg_rating'].iloc[indices].tolist()
         recommendations_year = movies['year'].iloc[indices].tolist()
@@ -83,8 +83,8 @@ def predict(movie_name:str):
         movie_year = movies['year'].iloc[idx]
         movie_avg_rating = movies['avg_rating'].iloc[idx]
 
-        print(recommendations_titles)
-        print(recommendations_year)
+        # print(recommendations_titles)
+        # print(recommendations_year)
 
         return {
             'movie_name':movie_name,

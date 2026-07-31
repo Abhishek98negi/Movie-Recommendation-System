@@ -23,10 +23,12 @@ def train_model():
         RATINGS_DATASET_PATH = PROJECT_ROOT / os.getenv("DATASET_DIR") / os.getenv("RATINGS_DATASET_NAME")
 
         MODEL_PATH = PROJECT_ROOT / os.getenv("MODEL_DIR") / os.getenv("MODEL_NAME")
+        MOVIE_TITLES_PATH = PROJECT_ROOT / os.getenv("MODEL_DIR") / os.getenv("MOVIE_TITLES_NAME")
         LOG_PATH = PROJECT_ROOT / os.getenv("LOG_DIR") / os.getenv("LOG_NAME")
 
 
         MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        MOVIE_TITLES_PATH.parent.mkdir(parents=True, exist_ok=True)
         LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
         logging.basicConfig(
@@ -62,6 +64,10 @@ def train_model():
         # Clean up whitespace if needed
         movies['title'] = movies['title'].str.strip()
 
+        # save movies names only model
+        dump(movies['title'], MOVIE_TITLES_PATH)
+        logging.info(f"Model saved to: {MOVIE_TITLES_PATH}")
+        
         # Convert text to vectors
         vectorizer = CountVectorizer()
         vector_matrix = vectorizer.fit_transform(movies['genres'])
@@ -72,7 +78,8 @@ def train_model():
             "movies_df":movies,
             "similarity_matrix": similarity_matrix
         }
-        
+
+    
         # save trained model
         dump(bundle, MODEL_PATH)
         logging.info(f"Model saved to: {MODEL_PATH}")
