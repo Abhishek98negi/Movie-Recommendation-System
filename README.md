@@ -152,6 +152,8 @@ https://drive.google.com/file/d/1zp5m_rM3F6zJRyMRal1y7d964bwqgGap/view?usp=shari
 ##Screenshots
 <img width="1917" height="1080" alt="image" src="https://github.com/user-attachments/assets/5d7fb376-c162-47a9-a516-2277a4c472ef" />
 
+<img width="1915" height="1080" alt="image" src="https://github.com/user-attachments/assets/263b6b45-5dc1-44fd-9956-498bdb865754" />
+
 <img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/e9f1cc39-e2cb-4909-bd6a-f850ce0d2e90" />
 
 
