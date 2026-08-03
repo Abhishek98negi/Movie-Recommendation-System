@@ -1,8 +1,5 @@
 # 🎬 Movie Recommendation System
 
-
-<video src="https://drive.google.com/file/d/1zp5m_rM3F6zJRyMRal1y7d964bwqgGap/view?usp=sharing" width="100%" controls autoplay loop muted></video>
-
 A Machine Learning-based **Movie Recommendation System** built using **Python, Scikit-learn, Pandas, and Streamlit**. The application recommends movies similar to the selected movie using **content-based filtering** and **cosine similarity**. Movie posters are fetched dynamically using the **OMDb API**, providing an interactive and visually appealing user experience.
 
 ---
@@ -149,5 +146,12 @@ Contributions are welcome!
 GitHub: https://github.com/Abhishek98negi
 
 ---
+## Demo link
+https://drive.google.com/file/d/1zp5m_rM3F6zJRyMRal1y7d964bwqgGap/view?usp=sharing
 
-## ⭐ If you found this project useful, please give it a Star!
+##Screenshots
+<img width="1917" height="1080" alt="image" src="https://github.com/user-attachments/assets/5d7fb376-c162-47a9-a516-2277a4c472ef" />
+
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/e9f1cc39-e2cb-4909-bd6a-f850ce0d2e90" />
+
+
