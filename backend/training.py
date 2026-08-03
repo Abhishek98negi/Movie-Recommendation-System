@@ -21,6 +21,7 @@ def train_model():
 
         MOVIES_DATASET_PATH = PROJECT_ROOT / os.getenv("DATASET_DIR") / os.getenv("MOVIES_DATASET_NAME")
         RATINGS_DATASET_PATH = PROJECT_ROOT / os.getenv("DATASET_DIR") / os.getenv("RATINGS_DATASET_NAME")
+        LINKS_DATASET_PATH = PROJECT_ROOT / os.getenv("DATASET_DIR") / os.getenv("LINKS_DATASET_NAME")
 
         MODEL_PATH = PROJECT_ROOT / os.getenv("MODEL_DIR") / os.getenv("MODEL_NAME")
         MOVIE_TITLES_PATH = PROJECT_ROOT / os.getenv("MODEL_DIR") / os.getenv("MOVIE_TITLES_NAME")
@@ -42,11 +43,18 @@ def train_model():
 
         movies = pd.read_csv(MOVIES_DATASET_PATH)
         ratings = pd.read_csv(RATINGS_DATASET_PATH)
+        links = pd.read_csv(LINKS_DATASET_PATH)
 
         logging.info("Dataset loaded successfully")  
 
+        # remove tmdbId from links
+        links = links.drop(columns=['tmdbId'])
+
         movies['genres'] = movies['genres'].fillna('')
         movies['genres'] = movies['genres'].str.replace('|', ' ', regex=False)
+
+        # Drop duplicates based on title
+        movies = movies.drop_duplicates(subset=['title'])
 
         # Compute average rating upto one decimal place and reset index
         average_ratings = ratings.groupby('movieId')['rating'].mean().reset_index().round(1)
@@ -64,7 +72,10 @@ def train_model():
         # Clean up whitespace if needed
         movies['title'] = movies['title'].str.strip()
 
-        # save movies names only model
+        # Merge the imdbId column from links into movies based on 'movieId'
+        movies = pd.merge(movies, links[['movieId', 'imdbId']], on='movieId', how='left')
+
+        # save only movies names model
         dump(movies['title'], MOVIE_TITLES_PATH)
         logging.info(f"Model saved to: {MOVIE_TITLES_PATH}")
         

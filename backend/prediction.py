@@ -1,5 +1,7 @@
 import os
 import logging
+import requests
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -9,7 +11,7 @@ from joblib import load
 
 # load .env content to env vars
 load_dotenv()
-
+API_KEY = os.getenv("API_KEY")
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT")).resolve()
 MODEL_PATH = PROJECT_ROOT / os.getenv("MODEL_DIR") / os.getenv("MODEL_NAME")
 LOG_PATH = PROJECT_ROOT / os.getenv("LOG_DIR") / os.getenv("LOG_NAME")
@@ -32,7 +34,7 @@ logging.info("Model loaded successfully.")
 movies = model['movies_df']
 similarity_matrix = model['similarity_matrix']
 
-def get_movie_recommendations(idx, cosine_sim_matrix, df, top_n=5):
+def get_movie_recommendations(idx, cosine_sim_matrix, movies, top_n):
     """
     Recommends top_n movies similar to the given movie index based on a cosine similarity matrix.
 
@@ -52,12 +54,49 @@ def get_movie_recommendations(idx, cosine_sim_matrix, df, top_n=5):
 
     # Sort the movies based on the similarity scores in descending order
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    # sim_scores: A sorted list of tuples (index, score)
 
     # Get the scores of the top_n most similar movies
     # (Skip the first one since it's the movie itself, which has a similarity of 1.0)
-    top_indices = [i[0] for i in sim_scores[1:top_n + 1]]
+    top_indices = []
+    i=0
+    while len(top_indices)!=top_n:
+        idx1 = sim_scores[i][0]
+        if  movies['title'].iloc[idx] != movies['title'].iloc[idx1]:
+            top_indices.append(idx1)
+        i+=1
 
+    # top_indices = [i[0] for i in sim_scores[0:top_n + 1]]
+    # print(top_indices)
     return  top_indices
+
+
+
+def get_poster_url(id, movie_name):
+    # Pad a string with leading zeros to a total width of 8
+    id = str(id).zfill(8)
+
+    url = "http://www.omdbapi.com/?i=tt"+id+"&apikey="+API_KEY    
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data["Poster"], data['Title']
+
+    return "",movie_name
+
+
+from concurrent.futures import ThreadPoolExecutor
+session = requests.Session()
+def fetch_poster(imdb_id):
+    imdb_id = str(imdb_id).zfill(8)
+    url = f"http://www.omdbapi.com/?i=tt{imdb_id}&apikey={API_KEY}"
+
+    try:
+        response = session.get(url, timeout=5)
+        data = response.json()
+        return data.get("Poster")
+    except Exception:
+        return None
 
 
 def predict(movie_name:str):
@@ -72,22 +111,33 @@ def predict(movie_name:str):
         # Get the index of the movie
         idx = matching_movies.index[0]
 
-    
-        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=6)
+        indices = get_movie_recommendations(idx, similarity_matrix, movies, top_n=4)
         recommendations_titles = movies['title'].iloc[indices].tolist()
         recommendations_avg_ratings = movies['avg_rating'].iloc[indices].tolist()
         recommendations_year = movies['year'].iloc[indices].tolist()
 
-        movie_name =  movies['title'].iloc[idx]       
+        movie_name =  movies['title'].iloc[idx]
+        imdb_id = int(movies['imdbId'].iloc[idx])       
         movie_genre = movies['genres'].iloc[idx]
         movie_year = movies['year'].iloc[idx]
         movie_avg_rating = movies['avg_rating'].iloc[idx]
+        movie_poster = ""
 
-        # print(recommendations_titles)
-        # print(recommendations_year)
+        imdb_ids = movies['imdbId'].iloc[indices].tolist()
+        imdb_ids.append(imdb_id)
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            posters = list(executor.map(fetch_poster, imdb_ids))
+
+        # print(posters)
+
+
+        if movie_poster == "":
+            movie_poster = "D:/My Learning/ML projects/Movie-Recommendation-System/frontend/default_image.jpeg"
+
 
         return {
             'movie_name':movie_name,
+            'movie_posters':posters,
             'movie_genre':movie_genre,
             'movie_year':movie_year,
             'movie_avg_rating':movie_avg_rating,
@@ -97,4 +147,4 @@ def predict(movie_name:str):
 
         }
 
-# predict("Jumanzji")
+# predict("Jumanji")

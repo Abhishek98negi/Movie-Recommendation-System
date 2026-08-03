@@ -7,8 +7,10 @@ MODEL_NAME=Recommendation_model.joblib
 DATASET_DIR=datasets
 MOVIES_DATASET_NAME=movies.csv
 RATINGS_DATASET_NAME=ratings.csv
+LINKS_DATASET_NAME=links.csv
 
 LOG_NAME=app.log
 MODEL_NAME=Recommendation_model.joblib
-
+MOVIE_TITLES_NAME=movies_titles.joblib
 API_URL=http://127.0.0.1:8000/predict-movies
+API_KEY=omdb api key

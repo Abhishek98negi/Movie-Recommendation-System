@@ -25,6 +25,7 @@ def predict_movies(input_data: Movie_input):
         return {}
     return {
         'movie_name':result['movie_name'],
+        'movie_posters':result['movie_posters'],
         'movie_genre':result['movie_genre'],
         'movie_year':result['movie_year'],
         'movie_avg_rating':result['movie_avg_rating'],
