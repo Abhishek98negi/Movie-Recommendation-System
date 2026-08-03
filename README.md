@@ -1,6 +1,7 @@
 # 🎬 Movie Recommendation System
 
-https://drive.google.com/file/d/1zp5m_rM3F6zJRyMRal1y7d964bwqgGap/view?usp=sharing
+
+<video src="https://drive.google.com/file/d/1zp5m_rM3F6zJRyMRal1y7d964bwqgGap/view?usp=sharing" width="100%" controls autoplay loop muted></video>
 
 A Machine Learning-based **Movie Recommendation System** built using **Python, Scikit-learn, Pandas, and Streamlit**. The application recommends movies similar to the selected movie using **content-based filtering** and **cosine similarity**. Movie posters are fetched dynamically using the **OMDb API**, providing an interactive and visually appealing user experience.
 
